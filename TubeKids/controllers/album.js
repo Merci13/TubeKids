@@ -9,28 +9,27 @@ var Album = require('../models/albums');
 var Song = require('../models/song');
 
 
-//metodo para obtener el artista 
+//metodo para obtener el album
 function getAlbum(req, res) {
-
+       
     var albumId =req.params.id;
+   console.log(albumId);
+    
 
-    Album.findById(albumId).populate({path: 'artist'}).exec((err, album) => {//path propiedad donde se van a cargar los datos, en este caso seria a artist
+    Album.findById(albumId).populate({path:'artist'}).exec((err, album)=>{//path propiedad donde se van a cargar los datos, en este caso seria a artist
+      
         if (err) {
                res.status(500).send({message:'Error en la peticion hacia la base de datos'});
         } else {
-            if (!album) {
-               res.status(404).send({message:'El album no existe.'});
-                
+      if (!album) {
+           res.status(404).send({message:'El album no existe.'});
+              
             }else{
-               res.status(200).send({album});
-
+                 res.status(200).send({album});
+    
             }
         }
     });
-
-
-    res.status(200).send({message: 'accion get album'});
-
 
 };
 
@@ -43,7 +42,7 @@ function saveAlbum(req,res){
     album.description = params.description;
     album.year = params.year;
     album.image = 'null';
-    album.Artist = params.artist;
+    album.artist = params.artist;
     
 
     album.save((err,albumStored)=>{
