@@ -16,13 +16,13 @@ function getAlbum(req, res) {
 
     Album.findById(albumId).populate({path: 'artist'}).exec((err, album) => {//path propiedad donde se van a cargar los datos, en este caso seria a artist
         if (err) {
-                send.status(500).send({message:'Error en la peticion hacia la base de datos'});
+               res.status(500).send({message:'Error en la peticion hacia la base de datos'});
         } else {
             if (!album) {
-                send.status(404).send({message:'El album no existe.'});
+               res.status(404).send({message:'El album no existe.'});
                 
             }else{
-                send.status(200).send({album});
+               res.status(200).send({album});
 
             }
         }
