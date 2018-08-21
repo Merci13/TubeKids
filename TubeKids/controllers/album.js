@@ -60,10 +60,39 @@ function saveAlbum(req,res){
 
 }
 
+//Metodo para obtener todos los albums
+
+function getAlbums(req,res){
+    var artistId = req.params.artist;
+    if(!artistId){
+        //sacar todos los albums de la base de datos
+        var find = Album.find({}).sort('title');
+    }else{
+        //sacar los albums de un artista concreto de la base de datos
+        var find = Album.find({artist : artistId}).sort('year'); 
+
+    }
+    find.populate({path:'artist'}).exec((err,albums)=>{//llenar los datos de artista en los campos de artista que estan dentro de los albums
+        if (err) {
+            res.status(500).send({message: 'Error en la peticion...'});
+        } else {
+            if (!albums) {
+                res.status(404).send({message: 'No se encontro ningun album'});
+
+            }else{
+                res.status(200).send({albums});
+
+            }
+        }
+    });
+
+}
+
 
 
 //metodo para exportar los metodos dentro de este hoja
 module.exports = {
     getAlbum,
-    saveAlbum
+    saveAlbum,
+    getAlbums
 }
