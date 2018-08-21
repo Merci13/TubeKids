@@ -88,11 +88,65 @@ function getAlbums(req,res){
 
 }
 
+//Metodo para modificar un album
+function updateAlbum(req,res){
+    var albumId = req.params.id;
+    var update = req.body;
+
+    Album.findByIdAndUpdate(albumId, update,(err,albumUpdated)=>{
+        if (err) {
+            res.status(500).send({message: 'Error en el servidor'});
+        } else {
+            if (!albumUpdated) {
+            res.status(404).send({message: 'No se actualizo el album'});
+                
+            } else {
+            res.status(200).send({album:albumUpdated});
+                
+            }
+        }
+    });
+
+}
+
+//metodo para eliminar un album
+function deleteAlbum(req, res){
+    var albumId = req.params.id;
+    Album.findByIdAndRemove( albumId,(err,albumRemoved)=>{
+        if (err) {
+            res.status(500).send({message:'Error al eliminar el album'});
+        } else {
+            if (!albumRemoved) {
+            res.status(404).send({message:'El album no ha sido eliminado'});
+                
+            } else {
+                Song.find({album:albumRemoved._id}).remove((err,songRemoved)=>{
+                    if (err) {
+                    res.status(500).send({message:'Error al eliminar la cancion'});
+                        
+                    } else {
+                        if (!songRemoved) {
+            res.status(404).send({message:'La cancion no ha sido eliminada'});
+                            
+                        } else {
+            res.status(200).send({album:albumRemoved});
+                            
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+}
+
 
 
 //metodo para exportar los metodos dentro de este hoja
 module.exports = {
     getAlbum,
     saveAlbum,
-    getAlbums
+    getAlbums,
+    updateAlbum,
+    deleteAlbum
 }

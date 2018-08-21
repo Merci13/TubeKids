@@ -15,6 +15,11 @@ api.post('/album',md_auth.ensureAuth,AlbumController.saveAlbum);//metodo para gu
 
 api.get('/albums/:artist?',md_auth.ensureAuth,AlbumController.getAlbums);//metodo obtener todos los albums
 
+api.put('/album/:id',md_auth.ensureAuth,AlbumController.updateAlbum);//metodo actualizar el album 
+ 
+api.delete('/album/:id',md_auth.ensureAuth,AlbumController.deleteAlbum);//metodo borrar el album  
+
+
 
 
 
