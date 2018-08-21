@@ -13,7 +13,7 @@ api.get('/album/:id',md_auth.ensureAuth,AlbumController.getAlbum);//metodo para 
 
 api.post('/album',md_auth.ensureAuth,AlbumController.saveAlbum);//metodo para guardar un album
 
-api.get('/albums/artist',md_auth.ensureAuth,AlbumController.getAlbums);//metodo obtener todos los albums
+api.get('/albums/:artist',md_auth.ensureAuth,AlbumController.getAlbums);//metodo obtener todos los albums
 
 
 
