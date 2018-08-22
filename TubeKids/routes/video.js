@@ -23,6 +23,6 @@ api.post('/upload-file-video/:id',[md_auth.ensureAuth,md_upload],VideoController
 
 api.get('/get-file-video/:videoFile',VideoController.getVideoFile)//metodo para obtener archivo de un video
 
-
+    
 //exporta las rutas
 module.exports = api;
