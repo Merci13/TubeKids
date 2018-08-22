@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var SongSchema= Schema({
+var VideoSchema= Schema({
     number: String,
     name: String,
     duration: String,
@@ -13,4 +13,4 @@ var SongSchema= Schema({
 
 });
 
-module.exports = mongoose.model('Song',SongSchema);
+module.exports = mongoose.model('Video',VideoSchema);

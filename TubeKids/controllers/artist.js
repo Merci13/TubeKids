@@ -6,7 +6,7 @@ var fs = require('fs');
 var mongoosePaginate = require('mongoose-pagination');
 var Artist = require('../models/artist');
 var Album = require('../models/albums');
-var Song = require('../models/song');
+var Video = require('../models/video');
 
 
 //metodo para obtener el artista 
@@ -123,12 +123,12 @@ function deleteArtist(req,res){
                             res.status(404).send({message:"El album no a sido eliminado"})
                         }else{
                             res.status(200).send({albumRemoved});
-                            Song.find({album:artistRemoved._id}).remove((err,songRemoved)=>{
+                            Video.find({album:artistRemoved._id}).remove((err,videoRemoved)=>{
                                 if (err) {
-                                    res.status(500).send({message: "Error al eliminar las canciones"});
+                                    res.status(500).send({message: "Error al eliminar Los videos"});
                                 }else{
-                                    if(!songRemoved){
-                                        res.status(404).send({message:"Las canciones no han sido eliminadas"})
+                                    if(!videoRemoved){
+                                        res.status(404).send({message:"Los videos no han sido eliminados"})
                                     }else{
                                         res.status(200).send({artist:artistRemoved});
                                        
