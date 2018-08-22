@@ -21,7 +21,7 @@ api.delete('/album/:id',md_auth.ensureAuth,AlbumController.deleteAlbum);//metodo
 
 api.post('/upload-image-album/:id',[md_auth.ensureAuth,md_upload],AlbumController.uploadImage);//metodo para subir la imagen al album
 
-api.get('./get-image-album/:imageFile',AlbumController.getImageFile)//metodo para obtener la imagen de un album
+api.get('/get-image-album/:imageFile',AlbumController.getImageFile)//metodo para obtener la imagen de un album
 
 
 
