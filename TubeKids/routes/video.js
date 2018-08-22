@@ -9,7 +9,10 @@ var multipart = require('connect-multiparty');
 var md_upload = multipart({uploadDir : './uploads/videos'});
 
 //rutas de express
-api.get('/video',md_auth.ensureAuth,VideoController.getVideo);//metodo para obtner los videos
+api.get('/video/:id',md_auth.ensureAuth,VideoController.getVideo);//metodo para obtner los videos
+
+api.post('/video',md_auth.ensureAuth,VideoController.saveVideo);//metodo para guardar los videos
+
 
 
 
