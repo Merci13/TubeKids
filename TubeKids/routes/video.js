@@ -15,7 +15,13 @@ api.post('/video',md_auth.ensureAuth,VideoController.saveVideo);//metodo para gu
 
 api.get('/videos/:album?',md_auth.ensureAuth,VideoController.getVideos);//metodo para obtener todos los videos
 
+api.put('/video/:id',md_auth.ensureAuth,VideoController.updateVideo);//metodo para actualizar los videos
 
+api.delete('/video/:id',md_auth.ensureAuth,VideoController.deleteVideo);//metodo para eliminar los videos
+
+api.post('/upload-file-video/:id',[md_auth.ensureAuth,md_upload],VideoController.uploadFile);//metodo para subir la archivo al video
+
+api.get('/get-file-video/:videoFile',VideoController.getVideoFile)//metodo para obtener archivo de un video
 
 
 //exporta las rutas

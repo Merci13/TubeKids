@@ -10,84 +10,214 @@ var Video = require('../models/video');
 
 //metodo para obtener el video
 
-function getVideo(req,res){
-    var videoId= req.params.id;
+function getVideo(req, res) {
+    var videoId = req.params.id;
 
-    Video.findById(videoId).populate({path:'album'}).exec((err,video)=>{
+    Video.findById(videoId).populate({
+        path: 'album'
+    }).exec((err, video) => {
         if (err) {
-            res.status(500).send({message:'Error en la peticion'});
+            res.status(500).send({
+                message: 'Error en la peticion'
+            });
         } else {
             if (!video) {
-                res.status(404).send({message:'No existe el video'});
+                res.status(404).send({
+                    message: 'No existe el video'
+                });
             } else {
-                res.status(200).send({video:video});
+                res.status(200).send({
+                     video
+                });
             }
         }
     });
 
 
-    
+
 }
 
 //metodo para guardar un video
-function saveVideo(req,res){
-var video = new Video();
-var params = req.body;
-video.number = params.number;
-video.name = params.name;
-video.duration = params.duration;
-video.file = 'null';
-video.album = params.album;
+function saveVideo(req, res) {
+    var video = new Video();
+    var params = req.body;
+    video.number = params.number;
+    video.name = params.name;
+    video.duration = params.duration;
+    video.file = null;
+    video.album = params.album;
 
-video.save((err,videoStored)=>{
-    if (err) {
-        res.status(500).send({message: 'Error en el servidor'});
-    } else {
-        if (!videoStored) {
-            res.status(404).send({message: 'No se a guardado el video'});
+    video.save((err, videoStored) => {
+        if (err) {
+            res.status(500).send({
+                message: 'Error en el servidor'
+            });
         } else {
-            res.status(200).send({video:videoStored});
+            if (!videoStored) {
+                res.status(404).send({
+                    message: 'No se a guardado el video'
+                });
+            } else {
+                res.status(200).send({
+                    video: videoStored
+                });
+            }
         }
-    }
-});
+    });
+
+}
+//metodo para actualizar videos
+function updateVideo(req,res){
+    var videoId = req.params.id;
+    var update = req.body;
+
+    Video.findByIdAndUpdate(videoId,update,(err,videoUpdate) =>{
+        if (err) {
+            res.status(500).send({message:'Error en el servidor'});
+        } else {
+            if (!videoUpdate) {
+                res.status(404).send({message:'No se ha actualizado el video'});
+            } else {
+                res.status(200).send({video:videoUpdate});
+            }
+        }
+    });
 
 }
 
-
+     
 //Metodo para listar los videos
-function getVideos(req,res){
-    var albumId = req.params.id;
+function getVideos(req, res) {
+    var albumId = req.params.album;
 
     if (!albumId) {
-        var find = Video.find({}).sort('number');
+        var find = Video.find({}).sort('number'); //ordenar por numero
     } else {
-        var find = Video.find({album:albumId}).sort('number');
+        var find = Video.find({
+            album: albumId
+        }).sort('number'); //ordenar por numero
     }
     find.populate({
-        path : 'album',
-        populate: {
+        path: 'album',
+        populate: { //rellenar el campo artista que corresponda
             path: 'artist',
-            model:'Artist'
+            model: 'Artist'
         }
-    }).exec(function(err,videos){
+    }).exec(function (err, videos) {
         if (err) {
-            res.status(500).send({message:'Error en la peticion'});
+            res.status(500).send({
+                message: 'Error en la peticion'
+            });
         } else {
             if (!videos) {
-            res.status(404).send({message:'No hay videos!!'});
+                res.status(404).send({
+                    message: 'No hay videos!!'
+                });
+
+            } else {
+                res.status(200).send({
+                    videos
+                });
+
+            }
+        }
+    });
+}
+//metodo para borrar un video
+function deleteVideo(req,res){
+    var videoId = req.params.id;
+    Video.findByIdAndRemove(videoId,(err,videoDeleted)=>{
+        if (err) {
+            res.status(500).send({message:'Error en el servidor'});
+        } else {
+            if (!videoDeleted) {
+            res.status(404).send({message:'no se encontro el video'});
                 
             } else {
-            res.status(200).send({videos});
+            res.status(200).send({video:videoDeleted});
                 
             }
+        }
+    });
+}
+//metodo para subir el fichero de video
+function uploadFile(req, res) {
+    var videoId = req.params.id;
+    var file_name = 'No subido...';
+
+    if (req.files) {
+        var file_path = req.files.file.path; //fichero el cual va a subir
+
+        var file_split = file_path.split('\/'); //recortar para obtener el nombre de la imagen
+
+
+        var file_name = file_split[2]; //se recoje el campo 3 del arreglo, porque ahi se encuentra el nombre de la imagen
+
+        var ext_split = file_name.split('\.'); //se recorta para obtner la extencion del archivo
+
+        var file_ext = ext_split[1]; //se recoje el campo 2. porque ahi esta la extencion despues del split
+     
+        if (file_ext == 'mp4' || file_ext == '3gp' || file_ext == 'webm'|| file_ext == 'm4a') { //se pregunta si las extenciones estan correctas
+            Video.findByIdAndUpdate(videoId, {
+                file: file_name
+            }, (err, videoUpdate) => {
+              
+                if (!videoUpdate) {
+                    res.status(404).send({
+                        message: "no se ha podido actualizar el Video"
+                    });
+
+                } else {
+                    res.status(200).send({
+                        video: videoUpdate
+                    });
+                }
+
+            });
+
+
+
+        } else {
+            res.status(200).send({
+                message: 'Extencion del archivo no valida'
+            });
+        }
+
+
+
+
+    } else {
+        res.status(200).send({
+            message: 'No a subido ningun video..'
+        });
+    }
+
+};
+
+//metodo para obtner archivo
+function getVideoFile(req, res) {
+    var videoFile = req.params.videoFile;
+    var path_file = './uploads/videos/' + videoFile;
+
+    fs.exists(path_file, function (exists) {
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
+        } else {
+            res.status(200).send({
+                message: 'No existe el video..'
+            });
         }
     });
 }
 
 
 //metodo para exportar los metodos dentro del archivo
-module.exports ={
+module.exports = {
     getVideo,
     saveVideo,
-    getVideos
+    getVideos,
+    updateVideo,
+    deleteVideo,
+    uploadFile,
+    getVideoFile
 }
