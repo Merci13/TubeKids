@@ -13,6 +13,8 @@ api.get('/video/:id',md_auth.ensureAuth,VideoController.getVideo);//metodo para 
 
 api.post('/video',md_auth.ensureAuth,VideoController.saveVideo);//metodo para guardar los videos
 
+api.get('/videos/:album?',md_auth.ensureAuth,VideoController.getVideos);//metodo para obtener todos los videos
+
 
 
 

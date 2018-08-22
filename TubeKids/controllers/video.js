@@ -54,9 +54,40 @@ video.save((err,videoStored)=>{
 }
 
 
+//Metodo para listar los videos
+function getVideos(req,res){
+    var albumId = req.params.id;
+
+    if (!albumId) {
+        var find = Video.find({}).sort('number');
+    } else {
+        var find = Video.find({album:albumId}).sort('number');
+    }
+    find.populate({
+        path : 'album',
+        populate: {
+            path: 'artist',
+            model:'Artist'
+        }
+    }).exec(function(err,videos){
+        if (err) {
+            res.status(500).send({message:'Error en la peticion'});
+        } else {
+            if (!videos) {
+            res.status(404).send({message:'No hay videos!!'});
+                
+            } else {
+            res.status(200).send({videos});
+                
+            }
+        }
+    });
+}
+
 
 //metodo para exportar los metodos dentro del archivo
 module.exports ={
     getVideo,
-    saveVideo
+    saveVideo,
+    getVideos
 }
