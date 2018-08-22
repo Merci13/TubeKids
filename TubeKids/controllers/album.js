@@ -139,6 +139,73 @@ function deleteAlbum(req, res){
     });
 
 }
+//metodo para subir una imagen para el album
+function uploadImage(req, res) {
+    var albumId = req.params.id;
+    var file_name = 'No subido...';
+
+    if (req.files) {
+        var file_path = req.files.image.path; //fichero el cual va a subir
+
+        var file_split = file_path.split('\/'); //recortar para obtener el nombre de la imagen
+
+
+        var file_name = file_split[2]; //se recoje el campo 3 del arreglo, porque ahi se encuentra el nombre de la imagen
+
+        var ext_split = file_name.split('\.'); //se recorta para obtner la extencion del archivo
+
+        var file_ext = ext_split[1]; //se recoje el campo 2. porque ahi esta la extencion despues del split
+        if (file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif') { //se pregunta si las extenciones estan correctas
+            Album.findByIdAndUpdate(albumId, {
+                image: file_name
+            }, (err, albumUpdated) => {
+                if (!albumUpdated) {
+                    res.status(404).send({
+                        message: "no se ha podido actualizar el album"
+                    });
+
+                } else {
+                    res.status(200).send({
+                        album: albumUpdated
+                    });
+                }
+
+            });
+
+
+
+        } else {
+            res.status(200).send({
+                message: 'Extencion del archivo no valida'
+            });
+        }
+
+
+       
+
+    } else {
+        res.status(200).send({
+            message: 'No a subido ninguna imagen..'
+        });
+    }
+
+};
+//metodo para obtener la imagen del album
+
+function getImageFile(req,res){
+    var imageFile = req.params.imageFile;
+    var path_file = './uploads/albums/'+imageFile;
+    
+    fs.exists(path_file,function(exists){
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
+        } else {
+            res.status(200).send({
+                message: 'No existe la imagen..'
+            });
+        }
+    });
+}
 
 
 
@@ -148,5 +215,7 @@ module.exports = {
     saveAlbum,
     getAlbums,
     updateAlbum,
-    deleteAlbum
+    deleteAlbum,
+    uploadImage,
+    getImageFile
 }
