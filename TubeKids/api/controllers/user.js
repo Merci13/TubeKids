@@ -1,7 +1,7 @@
 'use strict'
 
-var fs = require('fs');//modulo de file system
-var path = require('path');// acceder a rutas concretas
+var fs = require('fs'); //modulo de file system
+var path = require('path'); // acceder a rutas concretas
 var bcrypt = require('bcrypt-nodejs');
 var User = require('../models/user');
 var jwt = require('../services/jwt');
@@ -132,6 +132,14 @@ function loginUser(req, res) {
 function updateUser(req, res) {
     var userId = req.params.id;
     var update = req.body;
+
+    if (userId != req.user.sub) {
+       return res.status(500).send({
+            message: 'No tienes permiso para actualizar este usuario'
+        });
+    }
+
+
     User.findByIdAndUpdate(userId, update, (err, userUpdated) => { //se le pasa el user id del usuario a actualizar
         if (err) {
             res.status(500).send({
@@ -210,11 +218,11 @@ function uploadImage(req, res) {
 
 //metodo para obtener la imagen de usuario
 
-function getImageFile(req,res){
+function getImageFile(req, res) {
     var imageFile = req.params.imageFile;
-    var path_file = './uploads/users/'+imageFile;
+    var path_file = './uploads/users/' + imageFile;
     console.log(path_file);
-    fs.exists(path_file,function(exists){
+    fs.exists(path_file, function (exists) {
         if (exists) {
             res.sendFile(path.resolve(path_file));
         } else {
@@ -233,5 +241,5 @@ module.exports = {
     loginUser,
     updateUser,
     uploadImage,
-    getImageFile 
+    getImageFile
 };

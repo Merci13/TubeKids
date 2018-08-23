@@ -28,7 +28,7 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
   ngOnInit() { //Cargar el componente
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
-
+   
     console.log(this.identity);
     console.log(this.token);
   }
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
           alert("Usuario no loggeado")
         } else {
           //crear elemento en el localstorage para tener al usuario
-          localStorage.setItem(identity, JSON.stringify(identity));
+          localStorage.setItem('identity', JSON.stringify(identity));
 
 
           //conseguir el token para enviarlo a cada peticion http
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
                 alert("El token no se ha generado")
               } else {
                 //crear elemento en el localstorage para tener el token disponible
-                localStorage.setItem(token, token);
+                localStorage.setItem('token', token);
                 this.user = new User('', '', '', '', '', 'ROLE_USER', '');//Limpiar campos
               }
             },

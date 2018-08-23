@@ -67,7 +67,7 @@ export class UserService { //export, permite usarla fuera de la clase
     getToken() {
         let token = localStorage.getItem('token');
         if (token != "undefined") {
-            this.identity = token; //asigna el valor a this.token
+            this.token = token; //asigna el valor a this.token
         }
         else {
             this.token = null;
