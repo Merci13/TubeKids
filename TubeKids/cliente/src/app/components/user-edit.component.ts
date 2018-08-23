@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { GLOBAL } from '../services/global'
 import { User } from '../models/user';
-
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 //Usamos el componet para indicar los metadatos que va a tener este componente
 //y las caracteristicas
 @Component({
@@ -39,12 +40,13 @@ export class UserEditComponent implements OnInit {
         console.log(this.user);
         this._userService.update_user(this.user).subscribe(
             response => {
-                // this.user = response.user; //El valor nuevo lo asignamos a la propiedad user 
+                 this.user = response.user; //El valor nuevo lo asignamos a la propiedad user 
                 if (!response.user) {
                     this.alertMessage = 'EL usuario no se ha actualizado';
                 } else {
                     // this.user = response.user;
                     localStorage.setItem('identity', JSON.stringify(this.user));//actulizamos identity en localstorage
+                    
                     document.getElementById("identity_name").innerHTML = this.user.name;
                     if (!this.filesToUpload) {
                         //Si el metodo filesToUpload tiene contenido
@@ -79,7 +81,7 @@ export class UserEditComponent implements OnInit {
 
     fileChangeEvent(fileInput: any) {
         //recoge los archivos que se han seleccionados en el input
-        this.filesToUpload = <Array<File>>fileInput.target.files;
+        this.filesToUpload = <Array<File>>fileInput.target.files; 
 
     }
     //Se hara peticion ajax para subir ficheros convencionales
@@ -96,7 +98,7 @@ export class UserEditComponent implements OnInit {
             for (var i = 0; i < files.length; i++) {
                 formData.append('image', files[i], files[i].name);//insertar cada uno de los ficheros
             }
-            //Comprovamos que le peticion esta lista para hacerla
+            //Comprovamos que le peticion esta lista para hacerla  
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status == 200) {
