@@ -25,26 +25,22 @@
         Lol apellidos son obligatorios.
       </span>
     </p>
+    <p>
+      <label for="">Correo electronico:</label>
+      <input type="text" #email="ngModel" name="email" [(ngModel)]="user.email" class="form-control" required />
+      <span *ngIf="!email.valid && email.touched">
+        El email es obligatorio.
+      </span>
+    </p>
+
+
+    <div class="image_for_edit" *ngIf="user.image && user.image != null">
+      <img src="" />
       <p>
-        <label for="">Correo electronico:</label>
-        <input type="text" #email="ngModel" name="email" [(ngModel)]="user.email" class="form-control" required />
-        <span *ngIf="!email.valid && email.touched">
-          El email es obligatorio.
-        </span>
+        <label for="">Sube tu foto</label>
+        <input type="file" placeholder="Subir Imagen.." (change)="fileChangeEvent($event)"/>
       </p>
-
-
-      <div class="image_for_edit" *ngIf= "user.image && user.image != null">
-        <img src="" />
-        <p>
-          <label for="">Sube tu foto</label>
-          <input type="file" placeholder="Subir Imagen">
-        </p>
-      </div>
-
-
-
-
-      <input type="submit" value="Actualizar" class="btn btn-primary" />
+    </div>
+    <input type="submit" value="Actualizar" class="btn btn-primary" />
   </form>
 </div>
