@@ -91,7 +91,7 @@ export class UserEditComponent implements OnInit {
         //Promise: lanzar el codigo de la subida
         return new Promise(function (resolve, reject) {
 
-            var formData: any = new formData();//Para simular el comportamiento de un form normal
+            var formData: any = new FormData();//Para simular el comportamiento de un form normal
             var xhr = new XMLHttpRequest();//La peticion de ajax tipica
 
             //Recorremos los ficheros que recivamos por el array para anadirlos al formData

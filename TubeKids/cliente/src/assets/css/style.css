@@ -48,7 +48,42 @@ html, body{
 font-size: 16px;
 }
 
-
 .btn-logut{
     cursor: pointer;
+}
+.artist_image_for_edit img{
+    width:150px;
+}
+.artist-list{
+    margin: 0px;
+    padding: 0px;
+    margin-top: 30px;
+    list-style: none;
+}
+.artist-item{
+    width: 23%;
+    margin: 0px;
+    padding: 0px;
+    height: 327px;
+    border: 1px solid #444;
+    margin-left: 20px;
+    margin-top:20px;
+}
+.artist-item .artist-image{
+    height: 245px;
+    width: 100%;
+    background: black;
+    overflow: hidden;
+}
+.artist-item .artist-image img{
+    min-width: 100%;
+    width: 100%;
+}
+.artist-item .artist-name a{
+    color: white;
+}
+.artist-item .artist-name{
+    color: white;
+    padding: 10px;
+    background: #222326;
 }

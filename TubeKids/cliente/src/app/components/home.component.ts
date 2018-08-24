@@ -9,7 +9,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HomeComponent implements OnInit{
     public titulo: string;
 
-    
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,

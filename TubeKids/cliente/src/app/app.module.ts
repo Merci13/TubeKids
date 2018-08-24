@@ -4,11 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { routing, appRoutingProviders } from './app.routing';
 import { AppComponent } from './app.component';
+
 import { HomeComponent } from './components/home.component';
 import { UserEditComponent } from './components/user-edit.component';
 import { ArtistListComponent } from './components/artist-list.component';
 import { ArtistAddComponent } from './components/artist-add.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ArtistEditComponent } from './components/artis-edit.component';
+import { VideoAddComponen } from './components/video-add.component';
+
+// import { VideoAddComponent } from './components/';
+
 
 @NgModule({
   //Declaremos componentes y directivas
@@ -17,7 +23,9 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     UserEditComponent, //Esta forma se accede a su directiva dentro de cualquier otro componente 
     ArtistListComponent,
-    ArtistAddComponent
+    ArtistEditComponent,
+    ArtistAddComponent,
+    VideoAddComponen
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@ export class Video{// se define una clase y se exporta par aotros lados
         public name: string,
         public duration: string,
         public file: string,
-        public album: string
+        public artist: string
         
     ){ }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from './services/user.service';
 import { User } from './models/user';
 
@@ -17,6 +18,8 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
   public alertRegister;
 
   constructor(
+    private _route: ActivatedRoute,
+    private _router: Router,
     private _userService: UserService //Tendra todos los metodos que tenga nuestro servicio
 
   ) {
@@ -35,7 +38,6 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
 
   public onSubmit() {
     console.log(this.user);
-
     //Conseguir los datos del usuario identificado
     this._userService.signup(this.user).subscribe(
       response => { //Tendremos todos los datos que nos devuelva el api
@@ -92,6 +94,7 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
     localStorage.clear();
     this.identity = null;
     this.token = null;
+    this._router.navigate(['/']);
   }
 
 

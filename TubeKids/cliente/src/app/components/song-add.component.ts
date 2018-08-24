@@ -3,11 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { GLOBAL } from '../services/global';
 import { UserService } from '../services/user.service';
 import { Video } from '../models/video';
-import { Album } from '../models/album';
+
 
 @Component({
     selector: 'video-inicio',
-    templateUrl: './views/video-add.html',
+    templateUrl: '../views/video-add.html',
     providers: [UserService]
 })
 export class SongAddComponent implements OnInit {
@@ -34,7 +34,7 @@ export class SongAddComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('song cargada');
+        console.log('video cargada');
     }
 
 }

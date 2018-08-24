@@ -5,7 +5,7 @@ var fs = require('fs');
 
 var mongoosePaginate = require('mongoose-pagination');
 var Artist = require('../models/artist');
-var Album = require('../models/albums');
+var Album = require('../models/artist');
 var Video = require('../models/video');
 
 //metodo para obtener el video
@@ -14,7 +14,7 @@ function getVideo(req, res) {
     var videoId = req.params.id;
 
     Video.findById(videoId).populate({
-        path: 'album'
+        path: 'artist'
     }).exec((err, video) => {
         if (err) {
             res.status(500).send({

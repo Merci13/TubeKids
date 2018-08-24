@@ -8,7 +8,7 @@ var VideoSchema= Schema({
     name: String,
     duration: String,
     file: String,
-    album:{type: Schema.ObjectId, ref: 'Album'}
+    album:{type: Schema.ObjectId, ref: 'Artist'}
 
 
 });
