@@ -24,7 +24,7 @@ export class ArtistAddComponent implements OnInit{
         this.titulo = 'Crear un nuevo artista';
         this.identity = this._userService.getIdentity();
         this.token = this._userService.getToken();
-        this.url + GLOBAL.url;
+       
         this.artist = new Artist('','','');
     }
     ngOnInit(){
