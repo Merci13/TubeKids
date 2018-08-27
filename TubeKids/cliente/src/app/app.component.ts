@@ -91,6 +91,7 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
   logout() {
     localStorage.removeItem('identity');
     localStorage.removeItem('token');
+    localStorage.removeItem('perfil');
     localStorage.clear();
     this.identity = null;
     this.token = null;

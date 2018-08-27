@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { ArtistService } from '../services/artist.service';
 import { GLOBAL } from '../services/global';
 import { Artist } from '../models/artist';
+import { Perfil } from '../models/perfil';
 
 @Component({
     selector: 'artist-add',
@@ -11,58 +12,53 @@ import { Artist } from '../models/artist';
     providers: [UserService, ArtistService]
 })
 export class ArtistAddComponent implements OnInit {
-    public titulo: string;
-    public artist: Artist;
-    public identity;
+    public user: string;
+    public pin: string;
     public token;
-    public url: string;
-    public alertMessage;
+    public perfiles: Perfil[]
+
 
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
         private _userService: UserService,
-        private _artistService: ArtistService
+        private _artistService: ArtistService,
+        
+      
     ) {
-        this.titulo = 'Crear un nuevo artista';
-        this.identity = this._userService.getIdentity();
-        this.token = this._userService.getToken();
-        this.url = GLOBAL.url;
-        this.artist = new Artist('', '', '');
-        this.alertMessage
+        this.perfiles = [];
+        this.user ="";
+        this.pin = "";
+        this.token = localStorage.getItem("token");
+       
     }
     ngOnInit() {
         console.log('artist-add.component.ts cargado');
-
-
-
-        //Conseguir el listado de artistas
     }
 
-    
-    onSubmit() {
-        console.log(this.artist);
+
+    Login() {
        
-        this._artistService.addArtist(this.token, this.artist).subscribe(
-            response => {
-                this.artist = response.artist;
-                if (!response.artist) {
-                    this.alertMessage ='error en el servidor';
-                } else {
-                    this.alertMessage = 'El artista se creo';
-                    this.artist = response.artist;
-                    //   this._router.navigate(['/editar-artista', response.artist._id]);
+        var id;
+        id = JSON.parse(localStorage.getItem("identity"));
+      
+        this._artistService.getPerfil(this.token)
+            .subscribe(res => {
+                var a = false;
+                for (let i = 0; i < res.length; i++) { 
+                    if (res[i].userId == id._id) {
+                        if (res[i].username == this.user && res[i].pin == this.pin) {
+                            alert("Logueado como: " + res[i].name);
+                            localStorage.setItem("perfil", JSON.stringify(res[i]));
+                            a = true;
+                            window.location.href = '../';
+                        }
+                    }
                 }
-            },
-            error => {
-                var alertMessage = <any>error;
-                if (alertMessage != null) {
-                    var body = JSON.parse(error._body) //convertimos el texto en un obj json
-                    this.alertMessage = body.message;
-                    console.log(error);
+                if (!a) {
+                    alert("Datos incorrectos")
                 }
-            }
-
-        );
+            });
     }
+
 }

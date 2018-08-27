@@ -19,7 +19,7 @@ const appRoutes: Routes = [
     { path: 'create-artista', component: ArtistAddComponent },
     { path: 'mis-datos', component: UserEditComponent },
    // { path: 'mis-datos', component: UserEditComponent },
-   { path: 'crear-video/:artist', component: VideoAddComponen },
+   { path: 'crear-video/:page', component: VideoAddComponen },
     { path: '**', component: HomeComponent }
 ];
 

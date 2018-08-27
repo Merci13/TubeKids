@@ -3,14 +3,22 @@
     <h1 class="display-4">Tu Pagina preferida</h1>
     <p>Bienvenido a TubeKids</p>
 
+    
     <p>
-      <a class="btn btn-primary btn-lg" [routerLink]="['/artistas',1]" role="button">Ver videos</a>
+      <a class="btn btn-primary btn-lg"  [routerLink]="['/artistas',1]" role="button">Crear Perfiles</a>
     </p>
-    <p>
-      <a class="btn btn-primary btn-lg" [routerLink]="['/artistas',1]" role="button">Generar micro Usuarios</a>
-    </p>
-    <!-- <button class="btn btn-primary" [routerLink]="['../video']">Anadir Video</button><br><br>
-  <button class="btn btn-primary" [routerLink]="['../logprofile']">Logear Perfil</button> {{perfil.name}}<br> -->
+     <button class="btn btn-primary" [routerLink]="['../crear-video',1]">Anadir Video</button><br><br>
+ 
 
+<div>
+  
+  
+    <div class="col-md-8 " *ngFor = "let video of videos">
+<button class="btn btn-success" *ngFor = "let pefil of perfiles" (click) = "addVideoP(video,pefil)">Anadir a {{pefil['name']}}</button> *
+<button class="btn btn-primary" (click)='update(video);'>Editar</button>*
+<button class="btn btn-danger" (click)='deleteVideo(video)'>Eliminar</button>    
+  <iframe width="600" height="300" [src]='sanitizer.bypassSecurityTrustResourceUrl(video.file)' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+</div>
   </div>
 </div>

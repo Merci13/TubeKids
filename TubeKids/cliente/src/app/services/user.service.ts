@@ -37,6 +37,15 @@ export class UserService { //export, permite usarla fuera de la clase
             .map(res => res.json());
     }
 
+    VideoAdd(user_to_register) { //Recibe un objeto tipo usuario
+        let json = JSON.stringify(user_to_register);//guardamos en un objeto json la variable
+        let params = json;
+
+        let headers = new Headers({ 'Content-type': 'application/json' });
+        return this._http.post(this.url + 'video', params, { headers })
+            .map(res => res.json());
+    }
+
 
     //Metodo para modificar el usuario
     update_user(user_to_update) {

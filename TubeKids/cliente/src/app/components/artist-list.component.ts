@@ -5,6 +5,8 @@ import { UserService } from '../services/user.service';
 import { ArtistService } from '../services/artist.service';
 import { GLOBAL } from '../services/global';
 import { Artist } from '../models/artist';
+import { Perfil } from '../models/perfil';
+import { User } from '../models/user';
 
 @Component({
     selector: 'artist-list',
@@ -12,68 +14,74 @@ import { Artist } from '../models/artist';
     providers: [UserService, ArtistService]
 })
 export class ArtistListComponent implements OnInit {
-    public titulo: string;
-    public artists: Artist[];
-    public identity;
     public token;
-    public url: string;
-    public next_page;
-    public prev_page;
+    public current_perfil: Perfil;
+    perfiles: Perfil[];
 
-    constructor(
-        private _route: ActivatedRoute,
-        private _router: Router,
-        private _userService: UserService,
-        private _artistService: ArtistService
-    ) {
-        this.titulo = 'Artistas';
-        this.identity = this._userService.getIdentity();
-        this.token = this._userService.getToken();
-        this.url = GLOBAL.url;
-        this.next_page = 1;
-        this.prev_page = 1;
+
+    constructor(private _route: ActivatedRoute, private _router: Router, private _userService: UserService, private _artistService: ArtistService) {
+        this.current_perfil = new Perfil();
+        this.perfiles = [];
+        this.token = localStorage.getItem("token");
     }
     ngOnInit() {
-        console.log('artist-list.component.ts cargado');
-         this.getArtist();
-
-
-        //Conseguir el listado de artistas
+        this.getPerfiles();
     }
 
-    getArtist() {
+    evento() {
+        var pefil =  localStorage.getItem("perfil");
+        if(pefil == null){
+       var user = JSON.parse(localStorage.getItem("identity"));
+        if (this.current_perfil._id == undefined) {
+            
+            this.current_perfil.userId = user._id;
+            this._artistService.addPerfil(this.token, this.current_perfil)
+                .subscribe(res => {
+                    this.current_perfil = new Perfil();
+                   alert("Perfil Registrado");
+                   this.ngOnInit();
+                });
+        } else {
+            this._artistService.updatePerfil(this.current_perfil, this.token)
+                .subscribe(res => {
+                    this.current_perfil = new Perfil();
+                    alert("Perfil Actualizado");
+                });
+        }
 
-        //recogemos los parametros por la utl
-        this._route.params.forEach((params: Params) => {
-            //Recoge el parametro de la url
-            let page = + params['page'];
-            if (!page) {
-                page = 1;
+    }else{
+        alert("No tienes permisos");
+    }
+    }
 
-            } else {
-                this.next_page = page + 1;
-                this.prev_page = page - 1;
-
-                if (this.prev_page == 0) {
-                    this.prev_page = 1;
-                }
-            }
-            this._artistService.getArtists(this.token, page).subscribe(
-                response => {
-                    if (!response.artists) {
-                        this._router.navigate(['/']);
-                    } else {
-                        this.artists = response.artists;
+    getPerfiles() {
+        this.perfiles = [];
+        var user;
+        user = JSON.parse(localStorage.getItem("identity"));
+        this._artistService.getPerfil(this.token)
+            .subscribe(res => {
+                for (let i = 0; i < res.length; i++) {
+                    if (res[i].userId == user._id) {
+                        this.perfiles.push(res[i]);
                     }
-                },
-                error => {
-                    var errorMessage = <any>error;
-                    if (errorMessage != null) {
-                        var body = JSON.parse(error.body);
-                    }
-                }
 
-            );
+                }
+            });
+    }
+
+    borrarPerfil(perfil: Perfil){
+        this._artistService.deletePerfil(perfil,this.token)
+        .subscribe(res=>{
+            this.ngOnInit();
+                alert("El Perfil "+perfil.name+" ha sido borrado");
         });
     }
+
+    editar(perfil : Perfil){
+        this.current_perfil = perfil;
+    }
+
+
+
+
 }

@@ -1,20 +1,29 @@
-<div class="col-lg-6" *ngIf="identity && identity.role == 'ROLE_ADMIN'">
-  <h1> {{titulo}} </h1>
-
-  <form #formVideo="ngForm" (ngSubmit)="onSubmit();">
-
-    <p>
-      <label>NUmero</label>
-      <input type="text" #number="ngModel" name="number" [(ngModel)]="video.number" required class="form-control" />
-      <span *ngIf="!name.valid && name.touched">
-        El number es obligatorio
-      </span>
-    </p>
-
-    <p>
-      <label>Titulo</label>
-      <input type="text" #name="ngModel" name="name" [(ngModel)]="song.name" required class="form-control" />
-      <span *ngIf="!name.valid && name.touched">
-        El nombre es obligatorio
-      </span>
-    </p>
+<body id="RegisterForm">
+  <div class="container">
+    <h1 class="form-heading">Registrar Video
+    </h1>
+    <div class="login-form">
+      <div class="main-div">
+        <div class="panel">
+          <h2>Video nuevo
+          </h2>
+          <p>Informacion del Video nuevo
+          </p>
+        </div>
+        <form id="Register">
+          <div class="form-group">
+            <input type="first-name" class="form-control" name="name" [(ngModel)]="video.name" placeholder="Nombre">
+          </div>
+          <div class="form-group">
+            <input type="first-name" class="form-control" name="file" [(ngModel)]="video.file" placeholder="Link">
+          </div>
+         
+          <button type="submit" class="btn btn-primary" (click) = 'evento();'>Aceptar
+          </button>
+        </form>
+      </div>
+     
+   
+    </div>
+  </div>
+</body>

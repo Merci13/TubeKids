@@ -44,7 +44,7 @@ function saveVideo(req, res) {
     video.number = params.number;
     video.name = params.name;
     video.duration = params.duration;
-    video.file = null;
+    video.file = params.file;
     video.album = params.album;
 
     video.save((err, videoStored) => {
@@ -88,56 +88,32 @@ function updateVideo(req,res){
      
 //Metodo para listar los videos
 function getVideos(req, res) {
-    var albumId = req.params.album;
 
-    if (!albumId) {
-        var find = Video.find({}).sort('number'); //ordenar por numero
-    } else {
-        var find = Video.find({
-            album: albumId
-        }).sort('number'); //ordenar por numero
-    }
-    find.populate({
-        path: 'album',
-        populate: { //rellenar el campo artista que corresponda
-            path: 'artist',
-            model: 'Artist'
-        }
-    }).exec(function (err, videos) {
+    Video.find(function (err, videos) {
         if (err) {
-            res.status(500).send({
-                message: 'Error en la peticion'
-            });
-        } else {
-            if (!videos) {
-                res.status(404).send({
-                    message: 'No hay videos!!'
-                });
-
-            } else {
-                res.status(200).send({
-                    videos
-                });
-
-            }
+            res.status(422);
+            res.json({ error: err });
         }
+        res.status(200);
+        res.json(videos);
     });
 }
 //metodo para borrar un video
 function deleteVideo(req,res){
-    var videoId = req.params.id;
-    Video.findByIdAndRemove(videoId,(err,videoDeleted)=>{
+   Video.findByIdAndRemove(req.params.id, (err, videoRemoved) => {
+
         if (err) {
-            res.status(500).send({message:'Error en el servidor'});
+            res.status(500).send({ message: 'Error al elimiar video' });
+
         } else {
-            if (!videoDeleted) {
-            res.status(404).send({message:'no se encontro el video'});
-                
+            if (!videoRemoved) {
+                res.status(404).send({ message: 'No se ha podido eliminar el video' });
             } else {
-            res.status(200).send({video:videoDeleted});
-                
+                res.status(200).send({ message: 'Video eliminado' });
             }
         }
+
+
     });
 }
 //metodo para subir el fichero de video

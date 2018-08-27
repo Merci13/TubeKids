@@ -11,6 +11,8 @@ var user_routes= require('./routes/user');
 var artist_routes = require('./routes/artist');
 var album_routes = require('./routes/album');
 var video_routes = require('./routes/video');
+var perfil = require('./routes/perfil');
+var videop = require('./routes/videoperfil');
 
 
 
@@ -35,6 +37,8 @@ app.use('/api', user_routes);
 app.use('/api', artist_routes);
 app.use('/api', album_routes);
 app.use('/api', video_routes);
+app.use('/api', perfil);
+app.use('/api', videop);
 
 
 
