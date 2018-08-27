@@ -70,11 +70,18 @@ export class ArtistListComponent implements OnInit {
     }
 
     borrarPerfil(perfil: Perfil){
-        this._artistService.deletePerfil(perfil,this.token)
-        .subscribe(res=>{
-            this.ngOnInit();
-                alert("El Perfil "+perfil.name+" ha sido borrado");
-        });
+        var pefil =  localStorage.getItem("perfil");
+        if(perfil === null){
+            this._artistService.deletePerfil(perfil,this.token)
+            .subscribe(res=>{
+                this.ngOnInit();
+                    alert("El Perfil "+perfil.name+" ha sido borrado");
+            });
+
+        }else{
+            alert("No tiene permisos..");
+        }
+        
     }
 
     editar(perfil : Perfil){
