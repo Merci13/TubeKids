@@ -10,7 +10,7 @@ import { ArtistEditComponent } from './components/artis-edit.component';
 
 //Component video
 import { VideoAddComponen } from './components/video-add.component';
-
+//Rutas donde se llevaran todos
 //Vamos a difinir un array con la configuracion de cada una de la rutas de la app
 const appRoutes: Routes = [
     { path: '', component: HomeComponent },
