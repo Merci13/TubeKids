@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { UserService } from './services/user.service';
 import { User } from './models/user';
+import { MessageService } from './services/message-service';
+import * as swal from 'sweetalert';
+
 
 @Component({
   selector: 'app-root',
@@ -16,12 +19,13 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
   public token; //estara guardado en el localstorage
   public errorMessage;
   public alertRegister;
+  public titularArlerta = '';
 
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
-    private _userService: UserService //Tendra todos los metodos que tenga nuestro servicio
-
+    private _userService: UserService, //Tendra todos los metodos que tenga nuestro servicio
+    public _MessageService: MessageService
   ) {
     this.user = new User('', '', '', '', '', 'ROLE_USER', '');
     this.user_register = new User('', '', '', '', '', 'ROLE_USER', '');
@@ -31,7 +35,7 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
   ngOnInit() { //Cargar el componente
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
-   
+
     console.log(this.identity);
     console.log(this.token);
   }
@@ -107,22 +111,26 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
 
     var fecha = new Date(); //obtengo la fecha actual
     var year = fecha.getFullYear(); //obtengo el anno actual
-    var fecha2 = this.user_register.image.slice(0,-6); //Obtengo el anno del regitro
-    if(year - parseInt(fecha2) >= 18){//comparo anos si no es mayor a 18 no lo deja
+    var fecha2 = this.user_register.image.slice(0, -6); //Obtengo el anno del regitro
+    if (year - parseInt(fecha2) >= 18) {//comparo anos si no es mayor a 18 no lo deja
       this._userService.register(this.user_register).subscribe(
         response => {
-  
+
           let user = response.user;//guardamos el usuario de la base de datos
           this, this.user_register = user;// le damos un valor, el objeto relleno con los datos nuevos
-  
+
           if (!user._id) {
             this.alertRegister = 'Error al registrarse';
           } else {
             //Si viene con todo es que nos devolvio un tipo usuario correcto
             this.alertRegister = 'Registro realizado correctamente, identificate con ' + this.user_register.email;
             this.user_register = new User('', '', '', '', '', 'ROLE_USER', '');
+
+            this._MessageService.sendMessage(user.email).subscribe(() => {
+              alert("Formulario de contacto");
+            });
           }
-  
+
         },
         error => {
           var errorMessage = <any>error;
@@ -133,10 +141,9 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
           }
         }
       );
-    }else{
+    } else {
       alert("No puede registrarse menores de edad");
     }
 
-    
   }
 }

@@ -28,12 +28,6 @@
       <br>
     </span>
 
-    <span>
-      <a [routerLink]="['/mis-datos']" [routerLinkActive]="['actived']">
-        <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
-        Mis datos
-      </a>
-    </span>
     <a (click)="logout();" [routerLink]="['/']" class="btn-logut">
       <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
       Salir
@@ -123,7 +117,7 @@
         </p>
 
         <p>
-          <label for="">Correo electronico:</label>
+          <label for="">Fecha de nacimiento:</label>
           <input type="date" #date="ngModel" name="date" [(ngModel)]="user_register.image" class="form-control" required />
           <span *ngIf="!date.valid && date.touched">
             La fecha es obligatorio.

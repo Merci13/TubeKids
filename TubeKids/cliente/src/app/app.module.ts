@@ -13,6 +13,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ArtistEditComponent } from './components/artis-edit.component';
 import { VideoAddComponen } from './components/video-add.component';
 import { ArtistService } from './services/artist.service';
+import { MessageService } from './services/message-service';
+
+
 
 // import { VideoAddComponent } from './components/';
 
@@ -36,7 +39,7 @@ import { ArtistService } from './services/artist.service';
     routing
   ],
   providers: [appRoutingProviders,
-  ArtistService],
+  ArtistService,MessageService],
   //Dede donde cargamos la aplicacion
   bootstrap: [AppComponent]
 })
