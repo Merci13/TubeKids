@@ -43,7 +43,7 @@ export class ArtistListComponent implements OnInit {
                         alert("Perfil Registrado");
                         this.ngOnInit();
                     });
-                    //si no lo puede editar
+                //si no lo puede editar
             } else {
                 this._artistService.updatePerfil(this.current_perfil, this.token)
                     .subscribe(res => {
@@ -73,9 +73,10 @@ export class ArtistListComponent implements OnInit {
                 }
             });
     }
-
+    //
     borrarPerfil(perfil: Perfil) {
         var pefil = localStorage.getItem("perfil");
+        //Por parametros se envia el perfil que va a ser eliminado..
         if (perfil === null) {
             this._artistService.deletePerfil(perfil, this.token)
                 .subscribe(res => {
@@ -92,8 +93,5 @@ export class ArtistListComponent implements OnInit {
     editar(perfil: Perfil) {
         this.current_perfil = perfil;
     }
-
-
-
 
 }
