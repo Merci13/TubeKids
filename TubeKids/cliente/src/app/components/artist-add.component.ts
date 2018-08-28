@@ -36,17 +36,18 @@ export class ArtistAddComponent implements OnInit {
         console.log('artist-add.component.ts cargado');
     }
 
-
+    //Metodo de loggeo para los perfiles
     Login() {
        
         var id;
         id = JSON.parse(localStorage.getItem("identity"));
-      
+      //Obtengo el perfil segun el token 
         this._artistService.getPerfil(this.token)
             .subscribe(res => {
                 var a = false;
                 for (let i = 0; i < res.length; i++) { 
                     if (res[i].userId == id._id) {
+                        //Comparo con los perfiles del usuario que tenga...
                         if (res[i].username == this.user && res[i].pin == this.pin) {
                             alert("Logueado como: " + res[i].name);
                             localStorage.setItem("perfil", JSON.stringify(res[i]));

@@ -27,33 +27,36 @@ export class ArtistListComponent implements OnInit {
     ngOnInit() {
         this.getPerfiles();
     }
-
+    //Evento para anadir un perfil nuevo o actualizarlo..
     evento() {
-        var pefil =  localStorage.getItem("perfil");
-        if(pefil == null){
-       var user = JSON.parse(localStorage.getItem("identity"));
-        if (this.current_perfil._id == undefined) {
-            
-            this.current_perfil.userId = user._id;
-            this._artistService.addPerfil(this.token, this.current_perfil)
-                .subscribe(res => {
-                    this.current_perfil = new Perfil();
-                   alert("Perfil Registrado");
-                   this.ngOnInit();
-                });
+        var pefil = localStorage.getItem("perfil");
+        //Si perfil viene null puedo hacer lo que sea, si viene un perfil dentro no hay permisos validados.
+        if (pefil == null) {
+            var user = JSON.parse(localStorage.getItem("identity"));
+            //Si el perfil es indefinido se puede generar un perfil
+            if (this.current_perfil._id == undefined) {
+
+                this.current_perfil.userId = user._id;
+                this._artistService.addPerfil(this.token, this.current_perfil)
+                    .subscribe(res => {
+                        this.current_perfil = new Perfil();
+                        alert("Perfil Registrado");
+                        this.ngOnInit();
+                    });
+                    //si no lo puede editar
+            } else {
+                this._artistService.updatePerfil(this.current_perfil, this.token)
+                    .subscribe(res => {
+                        this.current_perfil = new Perfil();
+                        alert("Perfil Actualizado");
+                    });
+            }
+
         } else {
-            this._artistService.updatePerfil(this.current_perfil, this.token)
-                .subscribe(res => {
-                    this.current_perfil = new Perfil();
-                    alert("Perfil Actualizado");
-                });
+            alert("No tienes permisos");
         }
-
-    }else{
-        alert("No tienes permisos");
     }
-    }
-
+    //Metodo  para obtener los perfiles que esten en la base de datos
     getPerfiles() {
         this.perfiles = [];
         var user;
@@ -62,6 +65,8 @@ export class ArtistListComponent implements OnInit {
             .subscribe(res => {
                 for (let i = 0; i < res.length; i++) {
                     if (res[i].userId == user._id) {
+                        //Se obtienen todos los perfiles, sepregunta si es este perfil es de la cuenta del padre 
+                        //y se anade a la lista con el push..
                         this.perfiles.push(res[i]);
                     }
 
@@ -69,22 +74,22 @@ export class ArtistListComponent implements OnInit {
             });
     }
 
-    borrarPerfil(perfil: Perfil){
-        var pefil =  localStorage.getItem("perfil");
-        if(perfil === null){
-            this._artistService.deletePerfil(perfil,this.token)
-            .subscribe(res=>{
-                this.ngOnInit();
-                    alert("El Perfil "+perfil.name+" ha sido borrado");
-            });
+    borrarPerfil(perfil: Perfil) {
+        var pefil = localStorage.getItem("perfil");
+        if (perfil === null) {
+            this._artistService.deletePerfil(perfil, this.token)
+                .subscribe(res => {
+                    this.ngOnInit();
+                    alert("El Perfil " + perfil.name + " ha sido borrado");
+                });
 
-        }else{
+        } else {
             alert("No tiene permisos..");
         }
-        
+
     }
 
-    editar(perfil : Perfil){
+    editar(perfil: Perfil) {
         this.current_perfil = perfil;
     }
 

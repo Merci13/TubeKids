@@ -41,6 +41,7 @@ export class ArtistEditComponent implements OnInit {
 
         this.getArtist();
     }
+    //Metodo para o
     getArtist() {
         this._route.params.forEach((params: Params) => {
             let id = params['id'];
@@ -83,7 +84,7 @@ export class ArtistEditComponent implements OnInit {
                         this._uploadService.makeFileRequest(this.url + 'upload-image-artist/' + id, [], this.filesToUpload, this.token, 'image')
                             .then(
                                 (result) => {
-                                    this._router.navigate(['/artistas',1]);
+                                    this._router.navigate(['/artistas', 1]);
                                 },
                                 (error) => {
                                     console.log(error)
