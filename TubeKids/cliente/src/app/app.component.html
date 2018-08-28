@@ -113,6 +113,7 @@
           </span>
         </p>
 
+
         <p>
           <label for="">Contrasenna:</label>
           <input type="password" #password="ngModel" name="password" [(ngModel)]="user_register.password" class="form-control" required/>
@@ -120,6 +121,15 @@
             Contrasenna obligatoria.
           </span>
         </p>
+
+        <p>
+          <label for="">Correo electronico:</label>
+          <input type="date" #date="ngModel" name="date" [(ngModel)]="user_register.image" class="form-control" required />
+          <span *ngIf="!date.valid && date.touched">
+            La fecha es obligatorio.
+          </span>
+        </p>
+
         <input type="submit" value="Registrar" class="btn btn-primary" />
 
     </form>

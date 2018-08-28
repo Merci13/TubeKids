@@ -104,29 +104,39 @@ export class AppComponent implements OnInit { //forzamos que OnInit exista
     console.log(this.user_register);
     //subscribe tiene dos funciones de callback
     //Pasamos el user_register para que ese usuario lo guarde a la bd
-    this._userService.register(this.user_register).subscribe(
-      response => {
 
-        let user = response.user;//guardamos el usuario de la base de datos
-        this, this.user_register = user;// le damos un valor, el objeto relleno con los datos nuevos
-
-        if (!user._id) {
-          this.alertRegister = 'Error al registrarse';
-        } else {
-          //Si viene con todo es que nos devolvio un tipo usuario correcto
-          this.alertRegister = 'Registro realizado correctamente, identificate con ' + this.user_register.email;
-          this.user_register = new User('', '', '', '', '', 'ROLE_USER', '');
+    var fecha = new Date(); //obtengo la fecha actual
+    var year = fecha.getFullYear(); //obtengo el anno actual
+    var fecha2 = this.user_register.image.slice(0,-6); //Obtengo el anno del regitro
+    if(year - parseInt(fecha2) >= 18){//comparo anos si no es mayor a 18 no lo deja
+      this._userService.register(this.user_register).subscribe(
+        response => {
+  
+          let user = response.user;//guardamos el usuario de la base de datos
+          this, this.user_register = user;// le damos un valor, el objeto relleno con los datos nuevos
+  
+          if (!user._id) {
+            this.alertRegister = 'Error al registrarse';
+          } else {
+            //Si viene con todo es que nos devolvio un tipo usuario correcto
+            this.alertRegister = 'Registro realizado correctamente, identificate con ' + this.user_register.email;
+            this.user_register = new User('', '', '', '', '', 'ROLE_USER', '');
+          }
+  
+        },
+        error => {
+          var errorMessage = <any>error;
+          if (errorMessage != null) {
+            var body = JSON.parse(error._body) //convertimos el texto en un obj json
+            this.alertRegister = body.message;
+            console.log(error);
+          }
         }
+      );
+    }else{
+      alert("No puede registrarse menores de edad");
+    }
 
-      },
-      error => {
-        var errorMessage = <any>error;
-        if (errorMessage != null) {
-          var body = JSON.parse(error._body) //convertimos el texto en un obj json
-          this.alertRegister = body.message;
-          console.log(error);
-        }
-      }
-    );
+    
   }
 }

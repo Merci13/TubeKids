@@ -23,13 +23,11 @@ function saveUser(req, res) {
     var params = req.body;
 
     console.log(params);
-
-
     user.name = params.name;
     user.surname = params.surname;
     user.email = params.email;
     user.role = 'ROLE_USER';
-    user.image = 'null';
+    user.image = params.image;
 
     console.log(user);
 
@@ -68,10 +66,6 @@ function saveUser(req, res) {
             message: "Introduce la contrasenna"
         });
     }
-
-
-
-
 } //fin del saveUser
 
 function loginUser(req, res) {
